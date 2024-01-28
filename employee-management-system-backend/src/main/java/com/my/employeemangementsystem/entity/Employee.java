@@ -26,4 +26,6 @@ public class Employee {
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 
+    public Employee(Long id, String firstName, String lastName, String email) {
+    }
 }
