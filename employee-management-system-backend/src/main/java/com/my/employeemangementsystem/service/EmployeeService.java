@@ -2,9 +2,13 @@ package com.my.employeemangementsystem.service;
 
 import com.my.employeemangementsystem.dto.EmployeeDto;
 
+import java.util.List;
+
 public interface EmployeeService {
     EmployeeDto createEmployee(EmployeeDto employeeDto);
 
     EmployeeDto getEmployeeById(Long employeeId);
+
+    List<EmployeeDto> getAllEmployees();
 
 }
