@@ -19,8 +19,8 @@ public class EmployeeController {
         EmployeeDto savedEmployee = employeeService.createEmployee(employeeDto);
         return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
-    @GetMapping
-    public ResponseEntity<EmployeeDto> getEmployeeById(Long employeeId){
+    @GetMapping("{id}")
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("id") Long employeeId){
         EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
         return ResponseEntity.ok(employeeDto);
     }
