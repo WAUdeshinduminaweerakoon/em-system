@@ -1,26 +1,19 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
+import { listEmployees } from '../services/EmployeeService';
 
 const ListEmployeeComponent = () => {
-    const emDummyData = [
-        {
-            "id": 1,
-            "firstName": "Udesh",
-            "lastName": "Indumina",
-            "email": "udesh@gmail.com"
-        },
-        {
-            "id": 2,
-            "firstName": "pathum",
-            "lastName": "shanjana",
-            "email": "pathum@gmail.com"
-        },
-        {
-            "id": 3,
-            "firstName": "ramesh",
-            "lastName": "Madusanka",
-            "email": "ramesh@gmail.com"
-        },
-    ];
+
+    const [employees, setEmployees] =useState([])
+
+    useEffect(()=>{
+        listEmployees().then((response)=>{
+            setEmployees(response.data);
+        }).catch(error => {
+            console.error(error);
+        })
+
+    },[])
+  
 
     return (
         <div className="flex flex-col items-center justify-center h-full mt-10">
@@ -35,13 +28,14 @@ const ListEmployeeComponent = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {emDummyData.map(employee =>
-                        <tr key={employee.id} className="bg-gray-100">
-                            <td className="border border-gray-600 px-4 py-2">{employee.id}</td>
-                            <td className="border border-gray-600 px-4 py-2">{employee.firstName}</td>
-                            <td className="border border-gray-600 px-4 py-2">{employee.lastName}</td>
-                            <td className="border border-gray-600 px-4 py-2">{employee.email}</td>
-                        </tr>
+                    {
+                        employees.map(employee =>
+                            <tr key={employee.id} className="bg-gray-100">
+                                <td className="border border-gray-600 px-4 py-2">{employee.id}</td>
+                                <td className="border border-gray-600 px-4 py-2">{employee.firstName}</td>
+                                <td className="border border-gray-600 px-4 py-2">{employee.lastName}</td>
+                                <td className="border border-gray-600 px-4 py-2">{employee.email}</td>
+                            </tr>
                     )}
                 </tbody>
             </table>
