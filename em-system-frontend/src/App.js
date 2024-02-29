@@ -1,5 +1,6 @@
 
 import './App.css';
+import EmployeeComponent from './components/EmployeeComponent';
 
 
 import ListEmployeeComponent from './components/ListEmployeeComponent';
@@ -10,8 +11,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element ={<ListEmployeeComponent/>}></Route>
-        {/*  http://localhost:3000/empoyees */}
+        {/*  http://localhost:3000/employees */}
         <Route path='/employees' element ={<ListEmployeeComponent/>}></Route>
+        <Route path='/addEmployee' element={<EmployeeComponent/>} ></Route>
       </Routes>
       
     </BrowserRouter>
