@@ -8,18 +8,57 @@ const EmployeeComponent = () => {
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
 
+    const [errors, setErrors] = useState({
+        firstName:'',
+        lastName:'',
+        email:''
+    })
+
     const navigator = useNavigate();
     
     function saveEmployee(e){
         e.preventDefault();
 
-        const employee = {firstName, lastName, email}
-        console.log(employee)
+        if(validateForm()){
+            const employee = {firstName, lastName, email}
+            console.log(employee)
+    
+            createEmployee(employee).then((response) => {
+                console.log(response.data);
+                navigator('/employees')
+            })
 
-        createEmployee(employee).then((response) => {
-            console.log(response.data);
-            navigator('/employees')
-        })
+        }
+
+       
+    }
+    function validateForm(){
+        let valid =true;
+
+        const errorsCopy = {...errors}
+
+        if(firstName.trim()){
+            errorsCopy.firstName = '';
+        }else{
+            errorsCopy.firstName = 'First name is required';
+            valid = false;
+        }
+        if(lastName.trim()){
+            errorsCopy.lastName = '';
+        }else{
+            errorsCopy.lastName = 'Last is required';
+            valid = false;
+        }
+        if(email.trim()){
+            errorsCopy.email = '';
+        }else{
+            errorsCopy.email = 'Email is required';
+            valid = false;
+        }
+
+        setErrors(errorsCopy);
+
+        return valid;
     }
 
   return (
@@ -40,6 +79,7 @@ const EmployeeComponent = () => {
                     value={firstName}
                     onChange={(e)=>setFirstName(e.target.value)}
                 />
+                {errors.firstName && <div className="text-red-500 text-sm">{errors.firstName}</div>}
             </div>
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -53,6 +93,7 @@ const EmployeeComponent = () => {
                     value={lastName}
                     onChange={(e)=> setLastName(e.target.value)}
                 />
+                {errors.lastName && <div className="text-red-500 text-sm">{errors.lastName}</div>}
             </div>
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -66,6 +107,7 @@ const EmployeeComponent = () => {
                     value={email}
                     onChange={(e)=> setEmail(e.target.value)}
                 />
+                {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
             </div>
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
                 type="button"
