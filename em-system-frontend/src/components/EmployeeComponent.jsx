@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
-import { createEmployee } from '../services/EmployeeService'
-import {useNavigate} from 'react-router-dom';
+import React, {useState, useEffect} from 'react'
+import { createEmployee, getEmployee } from '../services/EmployeeService'
+import {useNavigate, useParams} from 'react-router-dom';
 
 const EmployeeComponent = () => {
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
+
+    const {id} = useParams();
 
     const [errors, setErrors] = useState({
         firstName:'',
@@ -15,6 +17,20 @@ const EmployeeComponent = () => {
     })
 
     const navigator = useNavigate();
+
+    useEffect(() => {
+        if(id){
+            getEmployee(id).then((response) => {
+                setFirstName(response.data.firstName);
+                setLastName(response.data.lastName);
+                setEmail(response.data.email);
+            }).catch(error=>{
+                console.error(error);
+            });
+        }
+    }, [id]);
+
+   
     
     function saveEmployee(e){
         e.preventDefault();
@@ -61,12 +77,22 @@ const EmployeeComponent = () => {
         return valid;
     }
 
+    function pageTitle(){
+        if(id){
+            return <h2 className="block text-gray-700 text-xl font-bold mb-4 ">Update Employee</h2>
+        }else{
+            return <h2 className="block text-gray-700 text-xl font-bold mb-4 ">Add Employee</h2>
+        }
+    }
+
   return (
     <div className="flex justify-center items-center h-screen">
     <div className="w-full max-w-xs">
         
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <h2 className="block text-gray-700 text-xl font-bold mb-4 ">Add Employee</h2>
+            {
+                pageTitle()
+            }
             <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                     First Name
